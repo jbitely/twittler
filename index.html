@@ -6,6 +6,8 @@
   </head>
   <body>
     <script>
+      var currentdate = new Date();
+      var timestamp = currentdate.getMonth() + "/" + currentdate.getDay() + " | " + currentdate.getHours() + ":" + currentdate.getMinutes();
 
       $(document).ready(function(){
         var $body = $('body');
@@ -15,7 +17,7 @@
         while(index >= 0){
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          $tweet.text(timestamp + ' @' + tweet.user + ': ' + tweet.message);
           $tweet.appendTo($body);
           index -= 1;
         }
