@@ -6,6 +6,21 @@
   </head>
   <body>
     <script>
+      var timeline = {
+        tweets : [],
+        getTweets : function(user){ // get all the tweets from a user or all users
+          user = user || "all"; // default user to "all"
+          if(user === "all"){
+            timeline.tweets = streams.home.slice();
+          } else {
+            timeline.tweets = streams.users[user].slice();
+          }
+        },
+        reset : function(){
+          timeline.tweets = [];
+        },
+      };
+
       var currentdate = new Date();
       var timestamp = currentdate.getMonth() + "/" + currentdate.getDay() + " | " + currentdate.getHours() + ":" + currentdate.getMinutes();
 
