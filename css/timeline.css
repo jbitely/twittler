@@ -1,14 +1,93 @@
-.tweet {
-  font-size: 1.2em;
+html,
+body {
+  margin:0;
+  padding:0;
+  height:100%;
+  background-color: #242424;
 }
 
-/* style user to look like links */
-.user {
-  color: white;
-  text-decoration: underline;
-  background-color: #01550D;
-  cursor: pointer;
+#wrapper {
+  min-height:100%;
+  position:relative;
 }
-.timestamp{
+
+.tweet {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.2em;
+  padding: 10px 10px;
+  margin-bottom: -2px;
+  border: 2px solid black;
+  background-color: #3F3F3F;
+  color: #BABABA;
+}
+
+.tweetButton {
+  padding: 8px;
+  border-radius: 5px;
+  margin: 0 5px;
+  border: 2px solid black;
+  background-color: #D1D1D1;
+}
+
+.controls {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+.user {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #CB0000;
+}
+
+.timestamp {
+  font-size: .5em;
+  color:black;
+}
+
+.content {
+  width: 65%;
+  padding-top: 100px;
+  padding-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  height: 69px;
+  margin: 0;
+  background-color: #CB0000;
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+h2 {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 5px;
+  left: 20px;
+  color: white;
+  font-size: 2.5em;
+}
+
+.footer{
+  width:100%;
+  height: 29px;
+  border-top: 1px solid black;
+  position:absolute;
+  bottom:0;
+  left:0;
+  margin: 0;
+  background-color: #CB0000;
+  text-align: center;
+  color: white;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
   font-size: .5em;
 }

@@ -1,74 +1,85 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>HRRB Twittler</title>
-    <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/timeline.css">
-  </head>
-  <body>
-    <div class="header"></div>
+
+<head>
+  <title>HRRB Twittler</title>
+  <script src="jquery.js"></script>
+  <script src="data_generator.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/timeline.css">
+</head>
+
+<body>
+  <div id="wrapper">
+    <div class="header">
+      <h2>TWITTLER</h2>
+      <div class="controls">
+        <button class="tweetButton" onclick="timeline.display('all')">Show All User's Tweets</button>
+        <button class="tweetButton" onclick="timeline.display(timeline.currentUser)">Check For New Tweets</button>
+      </div>
+    </div>
     <div class="content">
-      <button id="allTweets" onclick="timeline.display('all')">All User's Tweets</button>
-      <button id="newTweets" onclick="timeline.display(timeline.currentUser)">Check New Tweets</button>
       <div id="timeline"></div>
     </div>
-    <div class="footer"></div>
+    <div class="footer">
+      <p>Justin Bitely 2015</p>
+    </div>
     <script>
-      var timeline = {
-        tweets : [],
-        index : 0, // index of last displayed tweet
-        currentUser : 'all',
-        getTweets : function(user){ // get all the tweets from a user or all users
-          if(user === "all"){
-            timeline.tweets = streams.home.slice();
-          } else {
-            timeline.tweets = streams.users[user].slice();
-          }
-        },
-        display : function(user){
-          user = user || 'all'; //set a default of 'all' for user
-          if(timeline.currentUser !== user){ // if changing users, reset index
-            timeline.index = 0;
-            $('#timeline').empty(); // clear previous tweets when changing users
-          }
-          timeline.currentUser = user; // store the current user being displayed
-          timeline.getTweets(timeline.currentUser); // get tweets for requested user
-          var $timeline = $('#timeline');
-          var tweetCount = timeline.tweets.length -1;
-          while(timeline.index <= tweetCount){ // build new tweets in reverse chronological order
-            var tweet = timeline.tweets[timeline.index];
-            var $tweet = $('<div></div>');
-            $tweet.addClass('tweet');
-            var $user = $('<span></span>');
-            $user.addClass(tweet.user);
-            $user.addClass('user');
-            $user.text('@' + tweet.user);
-            var $message = $('<span></span>');
-            $message.addClass('message');
-            $message.text(' ' + tweet.message);
-            var $timestamp = $('<p></p>');
-            $timestamp.addClass('timestamp');
-            $timestamp.text(tweet.created_at);
-            $user.prependTo($message);
-            $message.appendTo($tweet);
-            $timestamp.appendTo($tweet);
-            $tweet.prependTo($timeline);
-            timeline.index += 1;
-          }
-          index = tweetCount +1; // store index for next call
+    var timeline = {
+      tweets: [],
+      index: 0, // index of last displayed tweet
+      currentUser: 'all',
+      getTweets: function(user) { // get all the tweets from a user or all users
+        if (user === "all") {
+          timeline.tweets = streams.home.slice();
+        } else {
+          timeline.tweets = streams.users[user].slice();
         }
-      };
+      },
+      display: function(user) {
+        user = user || 'all'; //set a default of 'all' for user
+        if (timeline.currentUser !== user) { // if changing users, reset index
+          timeline.index = 0;
+          $('#timeline').empty(); // clear previous tweets when changing users
+        }
+        timeline.currentUser = user; // store the current user being displayed
+        timeline.getTweets(timeline.currentUser); // get tweets for requested user
+        var $timeline = $('#timeline');
+        var tweetCount = timeline.tweets.length - 1;
+        while (timeline.index <= tweetCount) { // build new tweets in reverse chronological order
+          var tweet = timeline.tweets[timeline.index];
+          var $tweet = $('<div></div>');
+          $tweet.addClass('tweet');
+          var $user = $('<span></span>');
+          $user.addClass(tweet.user);
+          $user.addClass('user');
+          $user.text('@' + tweet.user);
+          var $message = $('<span></span>');
+          $message.addClass('message');
+          $message.text(' ' + tweet.message);
+          var $timestamp = $('<p></p>');
+          $timestamp.addClass('timestamp');
+          $timestamp.text(tweet.created_at);
+          $user.prependTo($message);
+          $message.appendTo($tweet);
+          $timestamp.appendTo($tweet);
+          $tweet.prependTo($timeline);
+          timeline.index += 1;
+        }
+        index = tweetCount + 1; // store index for next call
+      }
+    };
 
-       // when user is clicked, display their timeline
-      $('#timeline').on("click", ".user", function(){ // use delegated events so newly added tweets will trigger handler
-        var clicked = $(this).attr('class').replace(/( user)/, '');
-        timeline.display(clicked);
-      });
+    // when user is clicked, display their timeline
+    $('#timeline').on("click", ".user", function() { // use delegated events so newly added tweets will trigger handler
+      var clicked = $(this).attr('class').replace(/( user)/, '');
+      timeline.display(clicked);
+    });
 
-      $(document).ready(function(){
-        timeline.display(timeline.currentUser); // load inital tweets
-      });
+    $(document).ready(function() {
+      timeline.display(timeline.currentUser); // load inital tweets
+    });
     </script>
-  </body>
+  </div>
+</body>
+
 </html>
