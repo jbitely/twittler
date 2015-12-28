@@ -5,39 +5,67 @@
     <script src="data_generator.js"></script>
   </head>
   <body>
+    <div class="header"></div>
+    <div class="content">
+      <div id="timeline"></div>
+    </div>
+    <div class="footer"></div>
     <script>
       var timeline = {
         tweets : [],
+        index : 0, // index of last displayed tweet
+        currentUser : 'all',
         getTweets : function(user){ // get all the tweets from a user or all users
-          user = user || "all"; // default user to "all"
           if(user === "all"){
             timeline.tweets = streams.home.slice();
           } else {
             timeline.tweets = streams.users[user].slice();
           }
         },
-        reset : function(){
-          timeline.tweets = [];
+        display : function(user){
+          user = user || 'all'; //set a default of 'all' for user
+          if(timeline.currentUser !== user){ // if changing users, reset index
+            timeline.index = 0;
+          }
+          timeline.currentUser = user; // store the current user being displayed
+          timeline.getTweets(timeline.currentUser); // get tweets for requested user
+          var $timeline = $('#timeline');
+          var tweetCount = timeline.tweets.length -1;
+          console.log('index is ' + timeline.index);
+          while(timeline.index <= tweetCount){ // add new tweets in reverse chronological order
+            var tweet = timeline.tweets[timeline.index];
+            var $tweet = $('<div class="tweet"></div>');
+            $tweet.text(tweet.created_at + '| @' + tweet.user + ': ' + tweet.message);
+            $tweet.prependTo($timeline);
+            timeline.index += 1;
+          }
+          index = tweetCount +1; // store index for next call
+        },
+        reset : function(){ // reset timeline and reload page
+          timeline.index = 0;
+          timeline.currentUser = 'all';
+          $('#timeline').html('');
+          window.location.reload();
         },
       };
 
       var currentdate = new Date();
       var timestamp = currentdate.getMonth() + "/" + currentdate.getDay() + " | " + currentdate.getHours() + ":" + currentdate.getMinutes();
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+      // $(document).ready(function(){
+      //   var $body = $('body');
+      //   $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text(timestamp + ' @' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+      //   var index = streams.home.length - 1;
+      //   while(index >= 0){
+      //     var tweet = streams.home[index];
+      //     var $tweet = $('<div></div>');
+      //     $tweet.text(timestamp + ' @' + tweet.user + ': ' + tweet.message);
+      //     $tweet.appendTo($body);
+      //     index -= 1;
+      //   }
 
-      });
+      // });
 
     </script>
   </body>
