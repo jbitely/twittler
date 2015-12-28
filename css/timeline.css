@@ -1,0 +1,14 @@
+.tweet {
+  font-size: 1.2em;
+}
+
+/* style user to look like links */
+.user {
+  color: white;
+  text-decoration: underline;
+  background-color: #01550D;
+  cursor: pointer;
+}
+.timestamp{
+  font-size: .5em;
+}

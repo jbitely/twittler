@@ -4,11 +4,13 @@
     <title>HRRB Twittler</title>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/timeline.css">
   </head>
   <body>
     <div class="header"></div>
     <div class="content">
-      <button id="newTweets" onclick="timeline.display(timeline.currentUser)">Get New Tweets</button>
+      <button id="allTweets" onclick="timeline.display('all')">All User's Tweets</button>
+      <button id="newTweets" onclick="timeline.display(timeline.currentUser)">Check New Tweets</button>
       <div id="timeline"></div>
     </div>
     <div class="footer"></div>
@@ -25,9 +27,11 @@
           }
         },
         display : function(user){
+          console.log('display called with user ' + user);
           user = user || 'all'; //set a default of 'all' for user
           if(timeline.currentUser !== user){ // if changing users, reset index
             timeline.index = 0;
+            $('#timeline').empty();
             console.log('reset index');
           }
           timeline.currentUser = user; // store the current user being displayed
@@ -40,17 +44,17 @@
             var tweet = timeline.tweets[timeline.index];
             var $tweet = $('<div></div>');
             $tweet.addClass('tweet');
-            var $user = $('<a></a>');
+            var $user = $('<span></span>');
+            $user.addClass(tweet.user);
             $user.addClass('user');
-            $user.attr('id',tweet.user);
-            $user.text('@' + tweet.user + ' ');
-            var $message = $('<p></p>');
+            $user.text('@' + tweet.user);
+            var $message = $('<span></span>');
             $message.addClass('message');
-            $message.text(tweet.message);
+            $message.text(' ' + tweet.message);
             var $timestamp = $('<p></p>');
             $timestamp.addClass('timestamp');
             $timestamp.text(tweet.created_at);
-            $user.appendTo($tweet);
+            $user.prependTo($message);
             $message.appendTo($tweet);
             $timestamp.appendTo($tweet);
             $tweet.prependTo($timeline);
@@ -68,9 +72,12 @@
 
       timeline.display(timeline.currentUser); // load inital tweets
 
-      $('.user').click(function(){ // when user is clicked dispaly their timeline
+      // when user is clicked, display their timeline
+      $('#timeline').on("click", ".user", function(){ // use delegated events so newly added tweets will trigger handler
         console.log('clicked');
-        $('#timeline').replaceWith(timeline.display($(this).attr("id")));
+        var clicked = $(this).attr('class').replace(/( user)/, '');
+        console.log(clicked);
+        timeline.display(clicked);
       });
 
 
