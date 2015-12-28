@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>HRRB Twittler</title>
+  <title>Twittler</title>
   <script src="jquery.js"></script>
   <script src="data_generator.js"></script>
   <link rel="stylesheet" type="text/css" href="css/timeline.css">
@@ -13,8 +13,8 @@
     <div class="header">
       <h2>TWITTLER</h2>
       <div class="controls">
-        <button class="tweetButton" onclick="timeline.display('all')">Show All User's Tweets</button>
-        <button class="tweetButton" onclick="timeline.display(timeline.currentUser)">Check For New Tweets</button>
+        <button class="tweetButton" onclick="timeline.display('all')">Show All Tweets</button>
+        <button class="tweetButton" onclick="timeline.display(timeline.currentUser)">Get New Tweets</button>
       </div>
     </div>
     <div class="content">
@@ -37,14 +37,17 @@
       },
       display: function(user) {
         user = user || 'all'; //set a default of 'all' for user
+
         if (timeline.currentUser !== user) { // if changing users, reset index
           timeline.index = 0;
           $('#timeline').empty(); // clear previous tweets when changing users
         }
+
         timeline.currentUser = user; // store the current user being displayed
         timeline.getTweets(timeline.currentUser); // get tweets for requested user
         var $timeline = $('#timeline');
         var tweetCount = timeline.tweets.length - 1;
+
         while (timeline.index <= tweetCount) { // build new tweets in reverse chronological order
           var tweet = timeline.tweets[timeline.index];
           var $tweet = $('<div></div>');
@@ -71,7 +74,7 @@
 
     // when user is clicked, display their timeline
     $('#timeline').on("click", ".user", function() { // use delegated events so newly added tweets will trigger handler
-      var clicked = $(this).attr('class').replace(/( user)/, '');
+      var clicked = $(this).attr('class').replace(/( user)/, ''); // cull 'user' class
       timeline.display(clicked);
     });
 
